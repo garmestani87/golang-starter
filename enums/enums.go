@@ -1,6 +1,8 @@
 package main
 
-import "encoding/json"
+import (
+	"fmt"
+)
 
 const url string = "http://jj.com"
 
@@ -25,10 +27,7 @@ func main() {
 	order1 := Order{id: 1, price: 12.3, count: 2, orderStatus: approve}
 	order2 := Order{id: 1, price: 12.3, count: 2, orderStatus: reject}
 
-	orderJson1, _ := json.Marshal(order1)
-	orderJson2, _ := json.Marshal(order2)
-
-	println(string(orderJson1))
-	println(string(orderJson2))
+	fmt.Printf("%+v\n", order1)
+	fmt.Printf("%+v\n", order2)
 
 }
