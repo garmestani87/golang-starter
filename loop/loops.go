@@ -19,9 +19,13 @@ func main() {
 		println("hello loop")
 	}
 
-	lst := []int{1, 5, 8, 9}
+	var lst = []int{1, 5, 8, 9}
 	for index, item := range lst {
 		fmt.Printf("index = %d , item = %d \n", index, item)
+	}
+
+	for _, item := range lst {
+		fmt.Printf("item = %d \n", item)
 	}
 
 }
