@@ -24,6 +24,12 @@ func main() {
 	person, exist := persons["2"]
 	if exist {
 		fmt.Printf("person 2 is : %v \n", person)
+	} else {
+		fmt.Print("dose not exist !")
+	}
+
+	for i, item := range persons {
+		fmt.Printf("index : %s items : %v \n", i, item)
 	}
 
 }
