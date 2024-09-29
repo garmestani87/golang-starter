@@ -71,7 +71,6 @@ func main() {
 func validateStatusCode(code int) (valid bool, err error) {
 	if code != 200 {
 		return false, fmt.Errorf("error occured %d", code)
-		// return false, errors.New("error occured !")
 	}
 	return true, nil
 
