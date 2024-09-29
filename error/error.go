@@ -1,26 +1,65 @@
 package main
 
 import (
-	// "errors"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
 )
 
+type HttpMethod int
+
+const (
+	GET  HttpMethod = 1
+	POST HttpMethod = 2
+)
+
+type Result[T any] struct {
+	err      HttpError
+	response *T
+}
+
 type HttpError struct {
 	statusCode int
+	method     HttpMethod
+	error      error
 	message    string
 }
 
+func (err *HttpError) Error() string {
+	return fmt.Sprintf("http error occured with status code = %d, method = %d, message = %s ", err.statusCode, err.method, err.message)
+}
+
+func (err *HttpError) Unwrap() error {
+	return err.error
+}
+
+func newHttpError(statusCode int, message string, method HttpMethod) *HttpError {
+	err := HttpError{
+		statusCode: statusCode,
+		message:    message,
+		method:     method,
+		error:      errors.New(""),
+	}
+	return &err
+}
+
+func newResult[T http.Response](response *T, err *HttpError) (res *Result[T]) {
+	return &Result[T]{
+		err:      *err,
+		response: response,
+	}
+}
+
 func main() {
-	response, err := validateUrl("https://jsonplaceholder.typicode.com/posts")
-	if err != nil || response == nil {
-		fmt.Println(err.message)
+	result := validateUrl("")
+	if result.err.Unwrap() != nil {
+		fmt.Println(result.err.Error())
 		return
 	}
-	valid, _ := validateStatusCode(response.StatusCode)
+	valid, _ := validateStatusCode(result.response.StatusCode)
 	if valid {
-		body, err := io.ReadAll(response.Body)
+		body, err := io.ReadAll(result.response.Body)
 		if err != nil {
 			fmt.Println(err.Error())
 			return
@@ -38,20 +77,13 @@ func validateStatusCode(code int) (valid bool, err error) {
 
 }
 
-func validateUrl(url string) (response *http.Response, error *HttpError) {
+func validateUrl(url string) *Result[http.Response] {
 	if url == "" {
-		return nil, newHttpError(500, "url is invalid")
+		return newResult(nil, newHttpError(500, "url is invalid !", GET))
 	}
 	res, err := http.Get(url)
-	if err != nil {
-		return res, nil
+	if err == nil {
+		return newResult(res, nil)
 	}
-	return nil, newHttpError(500, "unexpected error !")
-}
-
-func newHttpError(statusCode int, message string) *HttpError {
-	return &HttpError{
-		statusCode: statusCode,
-		message:    message,
-	}
+	return newResult(nil, newHttpError(500, "unexpected error !", GET))
 }
