@@ -1,0 +1,16 @@
+2024/09/29 15:21:24 log.go:27: print logs !!!
+2024/09/29 15:32:10 /home/mohsen/Projects/golang/logs/log.go:24: 0
+2024/09/29 15:32:10 /home/mohsen/Projects/golang/logs/log.go:24: 1
+2024/09/29 15:32:10 /home/mohsen/Projects/golang/logs/log.go:24: 2
+2024/09/29 15:32:10 /home/mohsen/Projects/golang/logs/log.go:24: 3
+2024/09/29 15:32:10 /home/mohsen/Projects/golang/logs/log.go:24: 4
+error2024/09/29 15:42:14 /home/mohsen/Projects/golang/logs/log.go:37: 0
+error2024/09/29 15:42:14 /home/mohsen/Projects/golang/logs/log.go:37: 1
+error2024/09/29 15:42:14 /home/mohsen/Projects/golang/logs/log.go:37: 2
+error2024/09/29 15:42:14 /home/mohsen/Projects/golang/logs/log.go:37: 3
+error2024/09/29 15:42:14 /home/mohsen/Projects/golang/logs/log.go:37: 4
+error - 2024/09/29 15:42:37 /home/mohsen/Projects/golang/logs/log.go:37: 0
+error - 2024/09/29 15:42:37 /home/mohsen/Projects/golang/logs/log.go:37: 1
+error - 2024/09/29 15:42:37 /home/mohsen/Projects/golang/logs/log.go:37: 2
+error - 2024/09/29 15:42:37 /home/mohsen/Projects/golang/logs/log.go:37: 3
+error - 2024/09/29 15:42:37 /home/mohsen/Projects/golang/logs/log.go:37: 4
