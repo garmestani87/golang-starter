@@ -15,8 +15,8 @@ func main() {
 	go sendToChannel1(channel1)
 	go sendToChannel2(channel2)
 
-	time.Sleep(2*time.Second)
-	
+	time.Sleep(2 * time.Second)
+
 	select {
 	case res = <-channel1:
 		fmt.Printf("revieve %d \n", res)
