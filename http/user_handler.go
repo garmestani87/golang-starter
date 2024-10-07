@@ -10,10 +10,12 @@ import (
 type UserHandler struct{}
 
 type User struct {
-	name     string
-	lastname string
-	age      int
+	Name     string `json:"name"`
+	Lastname string `json:"lastname"`
+	Age      int    `json:"age"`
 }
+
+var users = map[string]User{}
 
 func main() {
 
@@ -32,7 +34,7 @@ func main() {
 func (handler *UserHandler) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 	switch {
 	case req.Method == http.MethodGet && len(req.URL.Query().Get("name")) > 0:
-		getUserByName(rw, req)
+		getUserByName(rw, req, req.URL.Query().Get("name"))
 	case req.Method == http.MethodGet && len(req.URL.Query().Get("name")) == 0:
 		getUsers(rw, req)
 	case req.Method == http.MethodPost:
@@ -40,7 +42,7 @@ func (handler *UserHandler) ServeHTTP(rw http.ResponseWriter, req *http.Request)
 	default:
 		{
 			rw.Write([]byte("unhandled request !"))
-			rw.WriteHeader(500)
+			rw.WriteHeader(http.StatusInternalServerError)
 		}
 	}
 }
@@ -54,33 +56,36 @@ func addUser(rw http.ResponseWriter, req *http.Request) {
 
 	user := User{}
 
-	dec := json.NewDecoder(req.Body)
-	err := dec.Decode(user)
+	err := json.NewDecoder(req.Body).Decode(&user)
 	if err != nil {
-		log.Fatal(err)
+		rw.Write([]byte(err.Error()))
+		rw.WriteHeader(http.StatusInternalServerError)
+		return
 	}
+	users[user.Name] = user
 	rw.Write([]byte("user created !"))
-	rw.WriteHeader(200)
+	rw.WriteHeader(http.StatusOK)
 }
 
 func getUsers(rw http.ResponseWriter, req *http.Request) {
-	users := &[]User{
-		User{name: "taghi", lastname: "rezaei", age: 10},
-		User{name: "mola", lastname: "taghavi", age: 20},
-	}
+	
+	rw.Header().Set("Content-Type", "application/json")
+
 	err := json.NewEncoder(rw).Encode(users)
 	if err != nil {
-		log.Fatal(err)
+		rw.Write([]byte(err.Error()))
+		rw.WriteHeader(http.StatusInternalServerError)
 	}
 
 }
 
-func getUserByName(rw http.ResponseWriter, req *http.Request) {
-	user := &User{name: "ali", lastname: "razavi", age: 10}
+func getUserByName(rw http.ResponseWriter, req *http.Request, name string) {
+	
 	rw.Header().Set("Content-Type", "application/json")
 
-	err := json.NewEncoder(rw).Encode(user)
+	err := json.NewEncoder(rw).Encode(users[name])
 	if err != nil {
-		log.Fatal(err)
+		rw.Write([]byte(err.Error()))
+		rw.WriteHeader(http.StatusInternalServerError)
 	}
 }
