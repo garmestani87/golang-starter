@@ -77,6 +77,8 @@ func getUsers(rw http.ResponseWriter, req *http.Request) {
 
 func getUserByName(rw http.ResponseWriter, req *http.Request) {
 	user := &User{name: "ali", lastname: "razavi", age: 10}
+	rw.Header().Set("Content-Type", "application/json")
+
 	err := json.NewEncoder(rw).Encode(user)
 	if err != nil {
 		log.Fatal(err)
