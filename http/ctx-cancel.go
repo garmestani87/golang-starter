@@ -29,7 +29,7 @@ func add(ctx context.Context, i int) {
 		select {
 		case <-ctx.Done():
 			fmt.Printf("add is cancelled ! num is : %d \n", i)
-			time.Sleep(1 * time.Second)
+			time.Sleep(2 * time.Second)
 			return
 		default:
 			{
@@ -45,12 +45,13 @@ func sub(ctx context.Context, i int) {
 		i -= 1
 		select {
 		case <-ctx.Done():
-			fmt.Printf("sub is cancelled ! num is : %d", i)
+			fmt.Printf("sub is cancelled ! num is : %d \n", i)
+			time.Sleep(2 * time.Second)
 			return
 		default:
 			{
 				fmt.Printf("sub is processing ! num is : %d \n", i)
-				time.Sleep(1 * time.Second)
+				time.Sleep(2 * time.Second)
 			}
 		}
 	}
