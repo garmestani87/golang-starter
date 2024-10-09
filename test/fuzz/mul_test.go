@@ -12,3 +12,5 @@ func FuzzMul(f *testing.F) {
 		}
 	})
 }
+
+// go test -fuzz .
